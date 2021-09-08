@@ -6,10 +6,10 @@ In this project I was tasked with building serveral checkout experiences in the 
 ### Problem
 The client wanted a seperate checkout experience where the user can add their cost center number to the checkout.  This number indicates that the user can checkout without paying sales tax.  The standard checkout requires the user to pay sales tax.
 ### Solution
-After some research I discovered I could skip the standard checkout, by creating a draft order.  This would require building a custom app that would handle all of the backend logic for this.  There is a problem with this.  I didn't have time to build out a custom backend solution.  In my research I found an app called mechanic.  This app is designed for developers like me.  They handle much of the backend repetetive logic.  They have many custom webhooks all set up.  This allows me to focus on the most of the front end logic and.  This is not a tool for amateurs.  This still requires indepth understanding of the Shopify API, webhooks, CRUD operations, etc. 
+After some research I discovered I could skip the standard checkout, by creating a draft order.  This would require building a custom app that would handle all of the backend logic for this.  There is a problem with this.  I didn't have time to build out a custom backend solution.  In my research I found an app called mechanic.  This app is designed for developers like me.  They handle much of the backend repetetive logic.  They have many custom webhooks all set up.  This allows me to focus on the most of the front end logic.  This is not a tool for amateurs.  This still requires indepth understanding of the Shopify API, webhooks, CRUD operations, etc. 
 Here are the code snippets from the mechanic app: 
 
-This is the webhook
+This is the liquid logic for the webhook
 ```
 {% assign line_items = array %}
 {% assign cost_center_num = event.data.costCenterNum %}
