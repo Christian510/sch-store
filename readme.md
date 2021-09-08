@@ -1,1 +1,1 @@
-***Custom Checkout Experience Created for a PromoShop Client
+# Custom Checkout Experience Created for a PromoShop Client
