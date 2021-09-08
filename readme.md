@@ -9,6 +9,7 @@ The client wanted a seperate checkout experience where the user can add their co
 After some research I discovered I could skip the standard checkout, by creating a draft order.  This would require building a custom app that would handle all of the backend logic for this.  There is a problem with this.  I didn't have time to build out a custom backend solution.  In my research I found an app called mechanic.  This app is designed for developers like me.  They handle much of the backend repetetive logic.  They have many custom webhooks all set up.  This allows me to focus on the most of the front end logic and.  This is not a tool for amateurs.  This still requires indepth understanding of the Shopify API, webhooks, CRUD operations, etc. 
 Here are the code snippets from the mechanic app: 
 
+This is the webhook
 ```
 {% assign line_items = array %}
 {% assign cost_center_num = event.data.costCenterNum %}
@@ -42,4 +43,42 @@ Here are the code snippets from the mechanic app:
     }
   ]
 {% endaction %}
+```
+Custom JS that handles passing the data to the webhook for creating the draft order and if successful display the success modal then redirect the user to the home page.
+```
+const mechanicCartSubmit = document.querySelector('#mechanic_cart_submit');
+if (mechanicCartSubmit) {
+  mechanicCartSubmit.addEventListener('click', (event) => {
+  event.preventDefault();
+
+  const ccn = document.querySelector('#cost-center-number').value;
+  const cartNotes = document.querySelector('#CartSpecialInstructions');
+    fetch({{ options.mechanic_webhook_url__required | json }}, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        cart: JSON.parse(event.target.dataset.cart),
+        customerId: JSON.parse(event.target.dataset.customerId),
+        customerIdSignature: JSON.parse(event.target.dataset.customerIdSignature),
+        costCenterNum: JSON.parse(ccn),
+        cartNotes: cartNotes
+      }),
+    }).then(data => {
+      let id = event.target.dataset.customerId;
+      if (id) {
+        // show success message modal.
+        emptyCart();
+        cost_center_num.removeEventListener('input', toggleCheckoutBtns);
+        ccOverlay.classList.replace('hidden', 'visible');
+        ccModal.classList.replace('hidden', 'visible');
+        } else {
+          throw "No customer id!";         
+        }
+    }).catch((error) => {
+       console.error(`Error sending cart data to Mechanic:, ${error}`);
+    });
+  });
+}
 ```
