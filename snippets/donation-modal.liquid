@@ -1,0 +1,137 @@
+
+<div id="donation-overlay" class="sch-overlay hidden"></div>
+<div id="donation-modal" class="sch-modal-positioned sch-modal-content hidden">
+  <div id="sch-modal-icon" class="icon-container" onclick="closeModal(event)">
+    {% render 'icon-close' %}
+  </div>
+  <div id="sch-content" class="sch-align-content">
+    <div class="sch-modal-text" data-modal-header>
+      <h3 class="">Would you like to Make a donation to Seattle Children's <em>ALL IN</em> Campaign&#63;</h3>
+      <h3 class="hidden" >THANK YOU FOR YOUR GENEROUS DONATION!</h3>
+    </div>
+      <form id="donation-form" class="align-center" novalidate method="POST">
+        <div class="radio-btn-container">
+          <div class="donation-container">
+            <input type="radio" 
+              name="donations" 
+              id="donation1" 
+              class="donation" 
+              data-variant-id="40486288457924" 
+              value="10">
+            <label for="donation1">$5</label>
+            <input type="radio" 
+                name="donations" 
+                id="donation2" 
+                class="donation" 
+                data-variant-id="40486288490692" 
+                value="10">
+            <label for="donation2">$10</label>
+            <input type="radio" 
+                name="donations" 
+                id="donation3" 
+                class="donation" 
+                data-variant-id="40486288523460" 
+                value="25">
+            <label for="donation3">$25</label>
+          </div>
+          <div class="donation-container">
+            <input type="radio" 
+                name="donations" 
+                id="donation4" 
+                class="donation" 
+                data-variant-id="40486288556228" 
+                value="50">  
+            <label for="donation4">$50</label>
+            <input type="radio" 
+              name="donations" 
+              id="donation5" 
+              class="donation" 
+              data-variant-id="40486288588996" 
+              value="50">  
+            <label for="donation5">$75</label>
+            <input type="radio" 
+              name="donations" 
+              id="donation6" 
+              class="donation" 
+              data-variant-id="40486288621764" 
+              value="10">
+            <label for="donation6">$100</label>
+          </div>
+          <div class="center-submit">
+            <input type="submit" 
+              id="donation-submit" 
+              class="btn" 
+              value="Add to Cart">
+          </div>
+        </div>
+      </form>
+      <a class="btn hidden" href="/cart">Return to Cart</a>
+  </div>
+</div>
+
+<script>
+    // ------ Close Modal ------ //  
+  function closeModal(event) {
+    const donationOverlay = document.getElementById('donation-overlay');
+    const donationModal = document.getElementById('donation-modal');
+    donationOverlay.classList.replace('visible', 'hidden');
+    donationModal.classList.replace('visible', 'hidden');
+    event.preventDefault();
+  };
+
+  function addDonationToCart(variant) {
+    let id = parseInt(variant);
+    console.log(id);
+    const formData =  {
+      'items': [{
+       'id': id,
+       'quantity': 1
+       }]
+     };
+
+    fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+          let hideForm = document.getElementById('donation-form');
+          let header = document.querySelector('.sch-modal-text');
+          let messages = header.querySelectorAll('h3');
+          let successMessage = messages[1];
+          let donateMessage = messages[0];
+          let returnToCart = document.getElementById('donation-form').nextElementSibling;
+          hideForm.classList.add('hidden');
+          donateMessage.classList.add('hidden');
+          successMessage.classList.remove('hidden');
+          returnToCart.classList.remove('hidden');
+        })
+        .catch(error => {
+            console.log(`There was an error adding donation to cart: ${error}`);
+        });
+  }
+
+  // Add donation to cart //
+  // Checks whether a radio button is checked or custom donation has a value greater than 0 //
+  let formSubmit = document.querySelector('#donation-form');
+  formSubmit.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const donation = [];
+      const donations = document.getElementsByName('donations');
+      donations.forEach((btn) => {
+          if (btn.checked === true) {
+              donation.push(btn);
+          }
+      });
+      if (donation.length == 0) {
+          alert("Please choose a donation amount. Thanks you!")
+      }
+      // Add fixed donation amount to cart
+      if (donation.length == 1) {
+          console.log("donation", donation[0].dataset.variantId);
+          addDonationToCart(donation[0].dataset.variantId);
+      }
+  });
+</script>

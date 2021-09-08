@@ -1,0 +1,43 @@
+{%- for collection in product.collections limit: 1 -%}
+  {%- if section.settings.message -%}
+    {%- assign featured_collection = section.settings.featured_collection -%}
+      {%- if featured_collection == blank or featured_collection.title == collection.title -%}
+        
+        <style>
+          .main-content {
+            padding-top: 0px;
+          }
+          .announcement-bar {
+            background-color: {{ section.settings.color_bg }};
+            margin-bottom: 10px;
+          }
+          
+          .announcement-bar__link:hover {
+            {% assign brightness = section.settings.color_bg | color_brightness %}
+            
+            {% if brightness <= 192 %}
+              {% assign lightenAmount = 255 | minus: brightness | divided_by: 255 | times: 16 %}
+              background-color: {{ section.settings.color_bg | color_lighten: lightenAmount }};
+              {% else %}
+              {% assign darkenAmount = 255 | divided_by: brightness | times: 8 %}
+              background-color: {{ section.settings.color_bg | color_darken: darkenAmount }};
+            {% endif %}
+          }
+          
+          .announcement-bar__message {
+            color: {{ section.settings.color_text }};
+          }
+        </style>
+        
+        <div class="announcement-bar" role="region" aria-label="{{ 'sections.header.announcement_bar_label' | t }}">
+          {%- unless section.settings.message_link == blank -%}
+            <a href="{{ section.settings.message_link }}" class="announcement-bar__link">
+            {%- endunless -%}
+            <p class="announcement-bar__message">{{ section.settings.message_text | escape }}</p>
+            {%- unless section.settings.message_link == blank -%}
+            </a>
+          {%- endunless -%}
+        </div>
+      {%- endif -%}
+    {%- endif -%}  
+  {%- endfor -%}

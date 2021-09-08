@@ -1,0 +1,9 @@
+{%- if section.settings.additional_details -%}
+    {% for tag in product.tags %}
+      {%- if tag == "additional color options" -%}
+        <p>{{ section.settings.additional_text }}</p>
+      {%- endif -%}
+    {% endfor %}
+  {%- else -%}
+    <p>{{ section.settings.additional_text }}</p>
+{%- endif -%}
