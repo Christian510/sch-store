@@ -2,7 +2,7 @@
 
 In this project I was tasked with building a custom checkout experience.
 
-## Problem
+## Problem 1: Tax Exempt checkout 
 The client wanted a seperate checkout experience where the user can add their cost center number to the checkout.  This number indicates that the user can checkout without paying sales tax.  The standard checkout requires the user to pay sales tax.
 ## Solution
 After some research I discovered I could skip the standard checkout, by creating a draft order.  This would require building a custom app that would handle all of the backend logic for this.  There is a problem with this.  I didn't have time to build out a custom backend solution.  In my research I found an app called mechanic.  This app is designed for developers like me.  They handle much of the backend repetetive logic.  They have many custom webhooks all set up.  This allows me to focus on the most of the front end logic.  This is not a tool for amateurs.  This still requires indepth understanding of the Shopify API, webhooks, CRUD operations, etc. 
@@ -81,3 +81,10 @@ if (mechanicCartSubmit) {
   });
 }
 ```
+In the Cart-template.liquid file an input button triggers thes functions.
+
+## Problem 2: Custom Donation added to Cart from the Cart
+I was asked to display serveral pre-set donation options in the Cart ($5, $10, etc.) that would display in the cart for the user to choose from if they wanted to make a donation to a specific cause.
+
+## Solution:
+In order to do this I created 6 donation products in the store.  Then, I created a modal that displayed these products when the user navigated to their cart.  After 3 seconds, if no donation products were in the cart, the modal would display.  If the user chose a donation amount, the modal would trun into a success message and notify the user that their donation was added to their cart.
