@@ -28,7 +28,6 @@
                         {{ item.product.title }}
                       </a>
                     </div>
-
                     {%- assign variant_options = 'template ' | split: ' ' -%}
                     {%- if item.product.has_only_default_variant != true -%}
                       {%- assign variant_options = item.options_with_values -%}
@@ -279,20 +278,17 @@
                   <div class="sch-radio-container">                
                     <label class="sch-justify-content-apart" for="personal">
                       <input id="personal" type="radio" name="checkout-type" checked="checked"
-                      value="personal" class="sch-radio-btns" onClick="activateCheckout(value)"
+                      value="personal" class="sch-radio-btns" onClick="activateCheckoutBtn(value)"
                       >
                         Personal Order
                     </label>
                     <label class="sch-justify-content-apart" for="cost-center">
                       <input  id="cost-center" type="radio" name="checkout-type" 
-                      value="cost-center" class="sch-radio-btns" onClick="activateCheckout(value)"
+                      value="cost-center" class="sch-radio-btns" onClick="activateCheckoutBtn(value)"
                       >
                         Cost Center Order
                     </label>
                     <p id="ccn-message" class="hidden" style="color: #4C4E56;">Please ensure there are no ALL IN products in your cart when using this option</p>
-                    <input id="cost-center-number" type="number" width="auto" maxlength="12" name="cost-center-number" 
-                    placeholder="COST CENTER ID" class="btn btn--secondary cart__submit" disabled required
-                    >
                   </div>
                 </div>
               </div>
@@ -307,24 +303,22 @@
                   name="checkout"
                   style="margin-top: 10px"
                   class="cart__submit btn btn--small-wide"
-                  value="{{ 'cart.general.checkout' | t }}">
-                <input style="margin-top: 10px;" type="hidden" 
-                  name="mechanic_cart_submit"
-                  class="cart__submit btn btn--small-wide"
-                  id="mechanic_cart_submit"
-                  value="Cost Center Checkout"
-                  data-cart="{{ cart | json | escape }}"
-                  data-customer-id="{{ customer.id | json | escape }}"
-                  data-customer-id-signature="{{ customer.id | hmac_sha256: 'YellowDuck2021' | json | escape }}"
-                  disabled
+                  value="{{ 'cart.general.checkout' | t }}"
                 >
+                <button style="margin-top: 10px;" type="button" 
+                  name="mechanic_cart_submit"
+                  class="cart__submit btn btn--small-wide hidden"
+                  id="cost-center-checkout"
+                  onclick="activateCheckoutModal()"  
+                >
+                  COST CENTER CHECKOUT
+                </button> 
               </div>
               <div class="cart__error-message-wrapper hide" role="alert" data-cart-error-message-wrapper>
                 <span class="visually-hidden">{{ 'general.accessibility.error' | t }} </span>
                 {% render 'icon-error' %}
                 <span class="cart__error-message" data-cart-error-message></span>
               </div>
-
               {%- if additional_checkout_buttons -%}
                 <div class="additional-checkout-buttons">{{ content_for_additional_checkout_buttons }}</div>
               {%- endif -%}
@@ -338,28 +332,31 @@
       role="status"
     ></p>
   </div>
-  
   <div class="empty-page-content{% if cart.item_count > 0 %} hide{% endif %} text-center" data-empty-page-content>
-  <h1>{{ 'cart.general.title' | t }}</h1>
-  <p class="cart--empty-message">{{ 'cart.general.empty' | t }}</p>
-  <div class="cookie-message">
-    <p>{{ 'cart.general.cookies_required' | t }}</p>
+      <h1>{{ 'cart.general.title' | t }}</h1>
+      <p class="cart--empty-message">{{ 'cart.general.empty' | t }}</p>
+    <div class="cookie-message">
+      <p>{{ 'cart.general.cookies_required' | t }}</p>
+    </div>
+    <a href="{{ routes.root_url }}" class="btn btn--has-icon-after cart__continue-btn">{{ 'general.404.link' | t }}{% render 'icon-arrow-right' %}</a>
   </div>
-  <a href="{{ routes.root_url }}" class="btn btn--has-icon-after cart__continue-btn">{{ 'general.404.link' | t }}{% render 'icon-arrow-right' %}</a>
-</div>
 </div>
 {% comment %} If no donations exist in the cart display donation modal. {% endcomment %}
+
+{% comment %} 
 
 {%- for item in cart.items -%}
   {%- if item.product.type == 'Donation' -%}
     {%- assign type = item.product.type -%}
   {%- endif -%}
-  {%- endfor -%}
+{%- endfor -%}
 {%- unless type == "Donation" or cart.item_count == 0 -%}
   {%- render 'donation-modal' -%}
 {%- endunless -%}
 
-{%- render 'validate-checkout-modal' -%}
+{% endcomment %}
+
+{%- include 'validate-checkout-modal' -%}
 
 {% schema %}
 {

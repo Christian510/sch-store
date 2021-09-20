@@ -9701,6 +9701,9 @@ hr {
     .sch-radio-container {
         width: 100%;
     }
+    .hide-label {
+        display: none;
+    }
 }
 
 .sch-justify-content-apart {
@@ -9743,23 +9746,23 @@ input::-webkit-inner-spin-button {
 
 .ccn-input ::placeholder {
     /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: #ffffff;
+    color: var(--sch-white);
     opacity: 1;
     /* Firefox */
 }
 
 .ccn-input :-ms-input-placeholder {
     /* Internet Explorer 10-11 */
-    color: #ffffff;
+    color: var(--sch-white);
 }
 
 .ccn-input ::-ms-input-placeholder {
     /* Microsoft Edge */
-    color: #ffffff;
+    color: var(--sch-white);
 }
 
 input[disabled]::placeholder {
-    color: #ffffff;
+    color: var(--sch-white);
 }
 
 
@@ -9767,11 +9770,43 @@ input[disabled]::placeholder {
 
 .sch-modal-text {
     text-align: center;
-    color: #ffffff;
+    color: var(--sch-white);
 }
 
 
-/* Cost Center Checkout Success Modal */
+/* COST CENTER CHECKOUT MODAL */
+
+.cc-header {
+    color: var(--sch-white);
+}
+
+.cc-justify-content {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+.cc-pad-input {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.zip {
+    max-width: 118px;
+}
+
+.hidden {
+    display: none;
+}
+
+@media only screen and (max-width: 750px) {
+    .cc-pad-input-group {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
 
 .sch-overlay {
     position: fixed;
@@ -9794,14 +9829,14 @@ input[disabled]::placeholder {
 
 .sch-modal-message,
 p {
-    color: #ffffff;
+    color: var(--sch-white);
     margin-bottom: 20px;
 }
 
 .sch-modal-content {
-    max-width: 600px;
-    height: 350px;
-    background-color: #ee7f4b;
+    max-width: 550px;
+    min-width: 340px;
+    background-color: var(--sch-orange);
     border-radius: 5px;
     padding: 20px;
 }

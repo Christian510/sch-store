@@ -9647,9 +9647,6 @@ function removeImageLoadingAnimation(image) {
 
 // ------ CUSTOM FUNCTIONALITY FOR SCH ------ //
 // This JS relies on the Mechanic app to function properly
-let mechanic_btn = document.getElementById("mechanic_cart_submit");
-let checkout_btns = document.getElementsByName("checkout");
-let cost_center_num = document.getElementById("cost-center-number");
 
 // EMPTY THE CART AFTER DRAFT ORDER IS SUCCESSFULLY SUBMITTED //
 function emptyCart() {
@@ -9688,58 +9685,32 @@ function emptyCartNotes() {
 }
 
 // RADIO BUTTONS FOR SELECTING CHECKOUT PATH //
-function activateCheckout(event) {
+
+function activateCheckoutBtn(event) {
+    let mechanic_btn = document.getElementById("cost-center-checkout");
+    let checkout_btns = document.getElementsByName("checkout");
+    let preventDefault = document.querySelector(".cart");
     let ccnMessage = document.getElementById('ccn-message');
     if (event === "cost-center") {
         checkout_btns[0].disabled = true;
         checkout_btns[0].type = "hidden"
-        cost_center_num.disabled = false;
-        mechanic_btn.type = "submit";
-        mechanic_btn.disabled = true;
+        mechanic_btn.classList.remove('hidden');
         ccnMessage.classList.remove('hidden');
 
     } else if (event === "personal") {
-        cost_center_num.disabled = true;
         checkout_btns[0].disabled = false;
         checkout_btns[0].type = "submit";
-        mechanic_btn.type = "hidden";
-        cost_center_num.disabled = true;
-        cost_center_num.value = "";
+        mechanic_btn.classList.add('hidden');
         ccnMessage.classList.add('hidden');
     }
 }
 
-// COST CENTER INPUT FIELD // 
-function toggleCheckoutBtns(event) {
-    if (cost_center_num.value.length > 0) {
-        checkout_btns[0].type = "hidden";
-        mechanic_btn.disabled = false;
-        mechanic_btn.type = "submit";
-    } else if (cost_center_num.value.length === 0) {
-        checkout_btns[0].disabled = true;
-        mechanic_btn.disabled = true;
-        mechanic_btn.type = "submit";
-        cost_center_num.value = "";
-    }
+function activateCheckoutModal() {
+    let overlay = document.getElementById('cc-overlay');
+    let modal = document.getElementById('cc-modal');
+    overlay.classList.remove('hidden');
+    modal.classList.remove('hidden');
 }
-
-// loads event listener if variable is not null
-if (!cost_center_num) {} else {
-    cost_center_num.addEventListener('input', toggleCheckoutBtns);
-}
-
-// DISABLE CHECKOUT BUTTONS IF CART NOTE OR LINE ITEMS QUANTITIES CHANGE
-// Force user to update cart before checkout.
-document.addEventListener('input', function(event) {
-    const className = event.target.className.split(' ');
-    let mechanic = document.getElementsByName('mechanic_cart_submit');
-    let checkout = document.getElementsByName('checkout');
-    // Disable checkout buttons until update button is clicked.
-    if (className[0] === 'cart-note__input' || className[0] === 'cart__qty-input') {
-        mechanic[0].disabled = true;
-        checkout[0].disabled = true;
-    }
-});
 
 // ------ COST CENTER MODAL ------ //
 //  Look in the Mechanic app for additional details for these variables.

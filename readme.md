@@ -7,7 +7,7 @@ The client wanted a seperate checkout experience where the user can add their co
 ## Solution
 After some research I discovered I could skip the standard checkout, by creating a draft order.  This would require building a custom app that would handle all of the backend logic for this.  There is a problem with this.  I didn't have time to build out a custom backend solution.  In my research I found an app called mechanic.  This app is designed for developers like me.  They handle much of the backend repetetive logic.  They have many custom webhooks all set up.  This allows me to focus on the most of the front end logic.  This is not a tool for amateurs.  This still requires indepth understanding of the Shopify API, webhooks, CRUD operations, etc. 
 
-### Here are the code snippets from the mechanic app: 
+### Code snippets from the mechanic app: 
 
 This is the liquid logic for the webhook
 ```
